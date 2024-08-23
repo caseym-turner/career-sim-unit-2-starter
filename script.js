@@ -6,6 +6,7 @@ const API_URL = `https://fsa-puppy-bowl.herokuapp.com/api/${cohortName}`;
 const modal = document.querySelector(".modal");
 const modalContent = document.querySelector(".modal-content");
 const closeModal = document.querySelector("#close-modal");
+const mainContainer = document.querySelector("main");
 
 modal.addEventListener("click", function(e){
   // closes modal when you click outside the content area of the modal
@@ -98,6 +99,26 @@ const removePlayer = async (playerId) => {
  * @param {Object[]} playerList - an array of player objects
  */
 const renderAllPlayers = (playerList) => {
+  console.log(playerList);
+  const playerCardsHTML = playerList.map(player=>{
+    const playerCard = document.createElement("div");
+    playerCard.classList.add("player-card");
+    const playerImg = document.createElement("img");
+    playerImg.src = player.imageUrl;
+    playerImg.alt = player.name;
+    const playerName = document.createElement("h3");
+    playerName.innerText = player.name;
+    const detailsButton = document.createElement("button");
+    detailsButton.innerText = "See Details";
+    detailsButton.addEventListener("click", function () {
+      modal.classList.add("modal-open");
+      modalContent.classList.add("modal-content-open");
+    })
+    playerCard.replaceChildren(playerImg, playerName, detailsButton);
+    return playerCard;
+  });
+
+mainContainer.replaceChildren(...playerCardsHTML)
  // TODO
 
  // when you add a event handler to the buttons, you need to pass an id of the player
